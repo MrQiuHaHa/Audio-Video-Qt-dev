@@ -23,18 +23,36 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-FFMPEG_HOME = /opt/homebrew/Cellar/ffmpeg/5.1.2
+mac: {
+    FFMPEG_HOME = /opt/homebrew/Cellar/ffmpeg/5.1.2
+    # 设置头文件路径
+    INCLUDEPATH += $${FFMPEG_HOME}/include
 
-# 设置头文件路径
-INCLUDEPATH += $${FFMPEG_HOME}/include
+    # 设置库文件路径
+    LIBS += -L$${FFMPEG_HOME}/lib \
+            -lavcodec \
+            -lavdevice \
+            -lavfilter \
+            -lavformat \
+            -lavutil \
+            -lpostproc \
+            -lswscale \
+            -lswresample
+}
 
-# 设置库文件路径
-LIBS += -L$${FFMPEG_HOME}/lib \
-        -lavcodec \
-        -lavdevice \
-        -lavfilter \
-        -lavformat \
-        -lavutil \
-        -lpostproc \
-        -lswscale \
-        -lswresample
+win32: {
+    FFMPEG_HOME = ..
+    # 设置头文件路径
+    INCLUDEPATH += $${FFMPEG_HOME}/include
+
+    # 设置库文件路径
+    LIBS += -L$${FFMPEG_HOME}/lib \
+            -lavcodec \
+            -lavdevice \
+            -lavfilter \
+            -lavformat \
+            -lavutil \
+            -lpostproc \
+            -lswscale \
+            -lswresample
+}

@@ -301,7 +301,6 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
-		../HelloQt/.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -340,7 +339,7 @@ TARGET        = HelloQt.app/Contents/MacOS/HelloQt
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 12.3
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = /Users/davis/Desktop/Audio-Video-Qt-dev/build-HelloQt-Desktop_arm_darwin_generic_mach_o_64bit-Debug/.qmake.stash
+EXPORT__QMAKE_STASH_ = 
 EXPORT_VALID_ARCHS = arm64
 EXPORT_DEFAULT_ARCHS = arm64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -600,7 +599,6 @@ Makefile: ../HelloQt/HelloQt.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -878,7 +876,6 @@ Makefile: ../HelloQt/HelloQt.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake
 /opt/homebrew/share/qt/mkspecs/features/qt_config.prf:
 /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf:
 /opt/homebrew/share/qt/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf:
 /opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf:
 /opt/homebrew/share/qt/mkspecs/features/toolchain.prf:
@@ -953,7 +950,6 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r HelloQt.app
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
