@@ -17,7 +17,7 @@ CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefau
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -fPIC $(DEFINES)
-INCPATH       = -I../HelloQt -I. -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers -I/opt/homebrew/share/qt/mkspecs/macx-clang -F/opt/homebrew/lib
+INCPATH       = -I../HelloQt -I. -I/opt/homebrew/Cellar/ffmpeg/5.1.2/include -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers -I/opt/homebrew/share/qt/mkspecs/macx-clang -F/opt/homebrew/lib
 QMAKE         = /opt/homebrew/Cellar/qt/6.3.2/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = HelloQt1.0.0
 DISTDIR = /Users/davis/Desktop/Audio-Video-Qt-dev/build-HelloQt-Desktop_arm_darwin_generic_mach_o_64bit-Debug/.tmp/HelloQt1.0.0
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 LFLAGS        = -stdlib=libc++ -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/opt/homebrew/lib
-LIBS          = $(SUBLIBS) -F/opt/homebrew/lib -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework IOKit -framework DiskArbitration -framework AGL -framework OpenGL   
+LIBS          = $(SUBLIBS) -F/opt/homebrew/lib -L/opt/homebrew/Cellar/ffmpeg/5.1.2/lib -lavcodec -lavdevice -lavfilter -lavformat -lavutil -lpostproc -lswscale -lswresample -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework IOKit -framework DiskArbitration -framework AGL -framework OpenGL   
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
 SED           = sed
@@ -301,6 +301,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
+		../HelloQt/.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -339,7 +340,7 @@ TARGET        = HelloQt.app/Contents/MacOS/HelloQt
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 12.3
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /Users/davis/Desktop/Audio-Video-Qt-dev/build-HelloQt-Desktop_arm_darwin_generic_mach_o_64bit-Debug/.qmake.stash
 EXPORT_VALID_ARCHS = arm64
 EXPORT_DEFAULT_ARCHS = arm64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -599,6 +600,7 @@ Makefile: ../HelloQt/HelloQt.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -876,6 +878,7 @@ Makefile: ../HelloQt/HelloQt.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake
 /opt/homebrew/share/qt/mkspecs/features/qt_config.prf:
 /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf:
 /opt/homebrew/share/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf:
 /opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf:
 /opt/homebrew/share/qt/mkspecs/features/toolchain.prf:
@@ -950,6 +953,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r HelloQt.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -982,7 +986,7 @@ moc_mainwindow.cpp: ../HelloQt/mainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		moc_predefs.h \
 		/opt/homebrew/share/qt/libexec/moc
-	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/davis/Desktop/Audio-Video-Qt-dev/build-HelloQt-Desktop_arm_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/davis/Desktop/Audio-Video-Qt-dev/HelloQt -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/opt/homebrew/lib ../HelloQt/mainwindow.h -o moc_mainwindow.cpp
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/davis/Desktop/Audio-Video-Qt-dev/build-HelloQt-Desktop_arm_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/davis/Desktop/Audio-Video-Qt-dev/HelloQt -I/opt/homebrew/Cellar/ffmpeg/5.1.2/include -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/opt/homebrew/lib ../HelloQt/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1011,7 +1015,37 @@ main.o: ../HelloQt/main.cpp ../HelloQt/mainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QDebug \
+		/opt/homebrew/lib/QtCore.framework/Headers/qdebug.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/avcodec.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/samplefmt.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/attributes.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/avutil.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/common.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/macros.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/avconfig.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/mem.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/version.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/error.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/rational.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/mathematics.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/intfloat.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/log.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/pixfmt.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/buffer.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/dict.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/frame.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/channel_layout.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/codec.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavutil/hwcontext.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/codec_id.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/version_major.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/codec_desc.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/codec_par.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/defs.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/packet.h \
+		/opt/homebrew/Cellar/ffmpeg/5.1.2/include/libavcodec/version.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../HelloQt/main.cpp
 
 mainwindow.o: ../HelloQt/mainwindow.cpp ../HelloQt/mainwindow.h \

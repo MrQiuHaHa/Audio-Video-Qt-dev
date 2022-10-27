@@ -22,3 +22,17 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+# 设置头文件路径
+INCLUDEPATH += /opt/homebrew/Cellar/ffmpeg/5.1.2/include
+
+# 设置库文件路径
+LIBS += -L/opt/homebrew/Cellar/ffmpeg/5.1.2/lib \
+        -lavcodec \
+        -lavdevice \
+        -lavfilter \
+        -lavformat \
+        -lavutil \
+        -lpostproc \
+        -lswscale \
+        -lswresample
