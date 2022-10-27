@@ -23,11 +23,13 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+FFMPEG_HOME = /opt/homebrew/Cellar/ffmpeg/5.1.2
+
 # 设置头文件路径
-INCLUDEPATH += /opt/homebrew/Cellar/ffmpeg/5.1.2/include
+INCLUDEPATH += $${FFMPEG_HOME}/include
 
 # 设置库文件路径
-LIBS += -L/opt/homebrew/Cellar/ffmpeg/5.1.2/lib \
+LIBS += -L$${FFMPEG_HOME}/lib \
         -lavcodec \
         -lavdevice \
         -lavfilter \
