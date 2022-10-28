@@ -144,7 +144,7 @@ void AudioThread::run() {
     //关闭设备
     avformat_close_input(&ctx);
 
-    av_log(nullptr, AV_LOG_DEBUG, "sub thread over\n");
+    av_log(nullptr, AV_LOG_INFO, "sub thread over\n");
 }
 
 void AudioThread::setStop(bool stop) {
