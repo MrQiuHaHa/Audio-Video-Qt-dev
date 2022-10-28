@@ -61,7 +61,8 @@ OBJECTS       = audiothread.o \
 		mainwindow.o \
 		moc_audiothread.o \
 		moc_mainwindow.o
-DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
+DIST          = ../09_record_audio_sub_thread/mac/Info.plist \
+		/opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/Cellar/qt/6.3.2/share/qt/mkspecs/common/unix.conf \
 		/opt/homebrew/Cellar/qt/6.3.2/share/qt/mkspecs/common/mac.conf \
@@ -930,10 +931,15 @@ qmake_all: FORCE
 	@test -d 09_record_audio_sub_thread.app/Contents/Resources || mkdir -p 09_record_audio_sub_thread.app/Contents/Resources
 	@touch 09_record_audio_sub_thread.app/Contents/Resources/empty.lproj
 	
+09_record_audio_sub_thread.app/Contents/Info.plist: 
+	@test -d 09_record_audio_sub_thread.app/Contents || mkdir -p 09_record_audio_sub_thread.app/Contents
+	@$(DEL_FILE) 09_record_audio_sub_thread.app/Contents/Info.plist
+	@sed -e "s,@SHORT_VERSION@,1.0,g" -e "s,\$${QMAKE_SHORT_VERSION},1.0,g" -e "s,@FULL_VERSION@,1.0.0,g" -e "s,\$${QMAKE_FULL_VERSION},1.0.0,g" -e "s,@TYPEINFO@,????,g" -e "s,\$${QMAKE_PKGINFO_TYPEINFO},????,g" -e "s,@BUNDLEIDENTIFIER@,davis.09-record-audio-sub-thread,g" -e "s,\$${PRODUCT_BUNDLE_IDENTIFIER},davis.09-record-audio-sub-thread,g" -e "s,\$${MACOSX_DEPLOYMENT_TARGET},12,g" -e "s,\$${IPHONEOS_DEPLOYMENT_TARGET},,g" -e "s,\$${TVOS_DEPLOYMENT_TARGET},,g" -e "s,\$${WATCHOS_DEPLOYMENT_TARGET},,g" -e "s,\$${IOS_LAUNCH_SCREEN},LaunchScreen,g" -e "s,@ICON@,,g" -e "s,\$${ASSETCATALOG_COMPILER_APPICON_NAME},,g" -e "s,@EXECUTABLE@,09_record_audio_sub_thread,g" -e "s,@LIBRARY@,09_record_audio_sub_thread,g" -e "s,\$${EXECUTABLE_NAME},09_record_audio_sub_thread,g" -e "s,@TYPEINFO@,????,g" -e "s,\$${QMAKE_PKGINFO_TYPEINFO},????,g" ../09_record_audio_sub_thread/mac/Info.plist >09_record_audio_sub_thread.app/Contents/Info.plist
 
 all: Makefile \
 		09_record_audio_sub_thread.app/Contents/PkgInfo \
-		09_record_audio_sub_thread.app/Contents/Resources/empty.lproj 09_record_audio_sub_thread.app/Contents/MacOS/09_record_audio_sub_thread
+		09_record_audio_sub_thread.app/Contents/Resources/empty.lproj \
+		09_record_audio_sub_thread.app/Contents/Info.plist 09_record_audio_sub_thread.app/Contents/MacOS/09_record_audio_sub_thread
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)

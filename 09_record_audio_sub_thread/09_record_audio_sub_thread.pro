@@ -41,3 +41,6 @@ LIBS += -L $${FFMPEG_HOME}/lib \
         -lavformat \
         -lavcodec \
         -lavutil
+
+DISTFILES += \
+    mac/Info.plist
