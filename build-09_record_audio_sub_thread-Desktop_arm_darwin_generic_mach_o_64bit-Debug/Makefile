@@ -61,8 +61,7 @@ OBJECTS       = audiothread.o \
 		mainwindow.o \
 		moc_audiothread.o \
 		moc_mainwindow.o
-DIST          = ../09_record_audio_sub_thread/mac/Info.plist \
-		/opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
+DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/Cellar/qt/6.3.2/share/qt/mkspecs/common/unix.conf \
 		/opt/homebrew/Cellar/qt/6.3.2/share/qt/mkspecs/common/mac.conf \
