@@ -15,7 +15,8 @@ MainWindow::~MainWindow()
 }
 
 // 使用下面命令播放录制好的PCM
-// ffplay -ar 44100 -ac 2 -f s16le 10_28_16_05_37.pcm
+// windows: ffplay -ar 44100 -ac 2 -f s16le 10_28_16_05_37.pcm
+// mac: ffplay -ar 48000 -ac 1 -f f32le 10_28_16_05_37.pcm
 
 void MainWindow::on_audioButton_clicked()
 {
