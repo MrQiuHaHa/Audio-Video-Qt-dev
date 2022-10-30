@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <QFile>
 
-#define FILENAME "~/Desktop/test.pcm"
+#define FILENAME "/Users/davis/Desktop/test.pcm"
 // 采样率 (这是mac，如果是windows默认44100)
 #define SAMPLE_RATE 48000
 // 采样格式 (这是mac，如果是windows默认AUDIO_S16LSB)

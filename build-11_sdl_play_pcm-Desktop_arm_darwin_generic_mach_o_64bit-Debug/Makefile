@@ -54,10 +54,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../11_sdl_play_pcm/main.cpp \
 		../11_sdl_play_pcm/mainwindow.cpp \
-		../11_sdl_play_pcm/playthread.cpp moc_playthread.cpp
+		../11_sdl_play_pcm/playthread.cpp moc_mainwindow.cpp \
+		moc_playthread.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		playthread.o \
+		moc_mainwindow.o \
 		moc_playthread.o
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
@@ -303,7 +305,6 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
-		../11_sdl_play_pcm/.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -344,7 +345,7 @@ TARGET        = 11_sdl_play_pcm.app/Contents/MacOS/11_sdl_play_pcm
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 12.3
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = /Users/davis/Desktop/Audio-Video-Qt-dev/build-11_sdl_play_pcm-Desktop_arm_darwin_generic_mach_o_64bit-Debug/.qmake.stash
+EXPORT__QMAKE_STASH_ = 
 EXPORT_VALID_ARCHS = arm64
 EXPORT_DEFAULT_ARCHS = arm64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -604,7 +605,6 @@ Makefile: ../11_sdl_play_pcm/11_sdl_play_pcm.pro /opt/homebrew/share/qt/mkspecs/
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -882,7 +882,6 @@ Makefile: ../11_sdl_play_pcm/11_sdl_play_pcm.pro /opt/homebrew/share/qt/mkspecs/
 /opt/homebrew/share/qt/mkspecs/features/qt_config.prf:
 /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf:
 /opt/homebrew/share/qt/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf:
 /opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf:
 /opt/homebrew/share/qt/mkspecs/features/toolchain.prf:
@@ -957,7 +956,6 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r 11_sdl_play_pcm.app
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -982,9 +980,19 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -dM -E -o moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_playthread.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_playthread.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_playthread.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_playthread.cpp
+moc_mainwindow.cpp: ../11_sdl_play_pcm/mainwindow.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../11_sdl_play_pcm/playthread.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QThread \
+		/opt/homebrew/lib/QtCore.framework/Headers/qthread.h \
+		moc_predefs.h \
+		/opt/homebrew/share/qt/libexec/moc
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/davis/Desktop/Audio-Video-Qt-dev/build-11_sdl_play_pcm-Desktop_arm_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/davis/Desktop/Audio-Video-Qt-dev/11_sdl_play_pcm -I/opt/homebrew/Cellar/sdl2/2.24.1/include -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/opt/homebrew/lib ../11_sdl_play_pcm/mainwindow.h -o moc_mainwindow.cpp
+
 moc_playthread.cpp: ../11_sdl_play_pcm/playthread.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QThread \
 		/opt/homebrew/lib/QtCore.framework/Headers/qthread.h \
@@ -1144,6 +1152,9 @@ playthread.o: ../11_sdl_play_pcm/playthread.cpp ../11_sdl_play_pcm/playthread.h 
 		/opt/homebrew/lib/QtCore.framework/Headers/QFile \
 		/opt/homebrew/lib/QtCore.framework/Headers/qfile.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playthread.o ../11_sdl_play_pcm/playthread.cpp
+
+moc_mainwindow.o: moc_mainwindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
 moc_playthread.o: moc_playthread.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_playthread.o moc_playthread.cpp
