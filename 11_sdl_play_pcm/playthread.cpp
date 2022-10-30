@@ -47,6 +47,18 @@ void pull_audio_data(void *userdata, Uint8 *stream, int len) {
     SDL_memset(stream, 0, len);
 
     // 取出AudioBuffer
+    AudioBuffer *buffer = (AudioBuffer *) userdata;
+
+    // 文件数据还没准备好
+    if (buffer->len <= 0) return;
+
+    // 取len、bufferLen的最小值（为了保证数据安全，防止指针越界）
+    buffer->pullLen = (len > buffer->len) ? buffer->len : len;
+
+    // 填充数据
+    SDL_MixAudio(stream, buffer->data, buffer->pullLen, SDL_MIX_MAXVOLUME);
+    buffer->data += buffer->pullLen;
+    buffer->len -= buffer->pullLen;
 }
 
 /*
@@ -77,6 +89,55 @@ void PlayThread::run() {
     AudioBuffer buffer;
     spec.userdata = &buffer;
 
-    // 打开文件
+    // 打开设备
+    if (SDL_OpenAudio(&spec, nullptr)) {
+        qDebug() << "SDL_OpenAudio error" << SDL_GetError();
+        // 清除所有的子系统
+        SDL_Quit();
+        return;
+    }
 
+    // 打开文件
+    QFile file(FILENAME);
+    if (!file.open(QFile::ReadOnly)) {
+        qDebug() << "file open error" << FILENAME;
+        // 关闭设备
+        SDL_CloseAudio();
+        //清除子系统
+        SDL_Quit();
+        return;
+    }
+
+    // 开始播放 (0是取消暂停，也就是播放)
+    SDL_PauseAudio(0);
+
+    // 存放从文件中读取的数据
+    Uint8 data[BUFFER_SIZE];
+    while (!isInterruptionRequested()) {
+        // 只要从文件中读取的音频数据，还没有填充到音频缓冲区，就跳过
+        if (buffer.len > 0) continue;
+
+        buffer.len = file.read((char *) data, BUFFER_SIZE);
+
+        // 文件数据已经读取完毕
+        if (buffer.len <= 0) {
+            // 剩余的样本数量
+            int samples = buffer.pullLen / BYTES_PER_SAMPLE;
+            int ms = samples / SAMPLE_RATE * 1000;
+            SDL_Delay(ms);
+            break;
+        }
+
+        // 读取到了pcm文件的数据
+        buffer.data = data;
+    }
+
+    // 关闭文件
+    file.close();
+
+    // 关闭设备
+    SDL_CloseAudio();
+
+    // 清除所有的子系统
+    SDL_Quit();
 }

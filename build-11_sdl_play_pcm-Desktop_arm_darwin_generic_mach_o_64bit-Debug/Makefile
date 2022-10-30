@@ -53,10 +53,12 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../11_sdl_play_pcm/main.cpp \
-		../11_sdl_play_pcm/mainwindow.cpp moc_mainwindow.cpp
+		../11_sdl_play_pcm/mainwindow.cpp \
+		../11_sdl_play_pcm/playthread.cpp moc_playthread.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		playthread.o \
+		moc_playthread.o
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/Cellar/qt/6.3.2/share/qt/mkspecs/common/unix.conf \
@@ -330,8 +332,10 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/exceptions.prf \
 		/opt/homebrew/share/qt/mkspecs/features/yacc.prf \
 		/opt/homebrew/share/qt/mkspecs/features/lex.prf \
-		../11_sdl_play_pcm/11_sdl_play_pcm.pro ../11_sdl_play_pcm/mainwindow.h ../11_sdl_play_pcm/main.cpp \
-		../11_sdl_play_pcm/mainwindow.cpp
+		../11_sdl_play_pcm/11_sdl_play_pcm.pro ../11_sdl_play_pcm/mainwindow.h \
+		../11_sdl_play_pcm/playthread.h ../11_sdl_play_pcm/main.cpp \
+		../11_sdl_play_pcm/mainwindow.cpp \
+		../11_sdl_play_pcm/playthread.cpp
 QMAKE_TARGET  = 11_sdl_play_pcm
 DESTDIR       = 
 TARGET        = 11_sdl_play_pcm.app/Contents/MacOS/11_sdl_play_pcm
@@ -941,8 +945,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../11_sdl_play_pcm/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../11_sdl_play_pcm/main.cpp ../11_sdl_play_pcm/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../11_sdl_play_pcm/mainwindow.h ../11_sdl_play_pcm/playthread.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../11_sdl_play_pcm/main.cpp ../11_sdl_play_pcm/mainwindow.cpp ../11_sdl_play_pcm/playthread.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../11_sdl_play_pcm/mainwindow.ui $(DISTDIR)/
 
 
@@ -978,15 +982,15 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -dM -E -o moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_playthread.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: ../11_sdl_play_pcm/mainwindow.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
+	-$(DEL_FILE) moc_playthread.cpp
+moc_playthread.cpp: ../11_sdl_play_pcm/playthread.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QThread \
+		/opt/homebrew/lib/QtCore.framework/Headers/qthread.h \
 		moc_predefs.h \
 		/opt/homebrew/share/qt/libexec/moc
-	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/davis/Desktop/Audio-Video-Qt-dev/build-11_sdl_play_pcm-Desktop_arm_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/davis/Desktop/Audio-Video-Qt-dev/11_sdl_play_pcm -I/opt/homebrew/Cellar/sdl2/2.24.1/include -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/opt/homebrew/lib ../11_sdl_play_pcm/mainwindow.h -o moc_mainwindow.cpp
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/davis/Desktop/Audio-Video-Qt-dev/build-11_sdl_play_pcm-Desktop_arm_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/davis/Desktop/Audio-Video-Qt-dev/11_sdl_play_pcm -I/opt/homebrew/Cellar/sdl2/2.24.1/include -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/opt/homebrew/lib ../11_sdl_play_pcm/playthread.h -o moc_playthread.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1014,6 +1018,9 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 main.o: ../11_sdl_play_pcm/main.cpp ../11_sdl_play_pcm/mainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../11_sdl_play_pcm/playthread.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QThread \
+		/opt/homebrew/lib/QtCore.framework/Headers/qthread.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../11_sdl_play_pcm/main.cpp
@@ -1021,6 +1028,9 @@ main.o: ../11_sdl_play_pcm/main.cpp ../11_sdl_play_pcm/mainwindow.h \
 mainwindow.o: ../11_sdl_play_pcm/mainwindow.cpp ../11_sdl_play_pcm/mainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../11_sdl_play_pcm/playthread.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QThread \
+		/opt/homebrew/lib/QtCore.framework/Headers/qthread.h \
 		ui_mainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QDebug \
 		/opt/homebrew/lib/QtCore.framework/Headers/qdebug.h \
@@ -1076,8 +1086,67 @@ mainwindow.o: ../11_sdl_play_pcm/mainwindow.cpp ../11_sdl_play_pcm/mainwindow.h 
 		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_misc.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../11_sdl_play_pcm/mainwindow.cpp
 
-moc_mainwindow.o: moc_mainwindow.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+playthread.o: ../11_sdl_play_pcm/playthread.cpp ../11_sdl_play_pcm/playthread.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QThread \
+		/opt/homebrew/lib/QtCore.framework/Headers/qthread.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QDebug \
+		/opt/homebrew/lib/QtCore.framework/Headers/qdebug.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_main.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_stdinc.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_config.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_platform.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/begin_code.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/close_code.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_assert.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_atomic.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_audio.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_error.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_endian.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_mutex.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_thread.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_rwops.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_clipboard.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_cpuinfo.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_events.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_video.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_pixels.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_rect.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_surface.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_blendmode.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_keyboard.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_keycode.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_scancode.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_mouse.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_joystick.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_guid.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_gamecontroller.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_sensor.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_quit.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_gesture.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_touch.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_filesystem.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_haptic.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_hidapi.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_hints.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_loadso.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_log.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_messagebox.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_metal.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_power.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_render.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_shape.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_system.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_timer.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_version.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_locale.h \
+		/opt/homebrew/Cellar/sdl2/2.24.1/include/SDL2/SDL_misc.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QFile \
+		/opt/homebrew/lib/QtCore.framework/Headers/qfile.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playthread.o ../11_sdl_play_pcm/playthread.cpp
+
+moc_playthread.o: moc_playthread.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_playthread.o moc_playthread.cpp
 
 ####### Install
 
